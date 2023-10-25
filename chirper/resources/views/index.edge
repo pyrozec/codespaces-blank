@@ -1,0 +1,41 @@
+@layout('layouts/master')
+@section('content')
+  
+<div class="container">
+
+    <div class="text-center">
+        @if(flashMessage('successmessage'))
+            <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
+        @endif
+    </div>
+
+    <div class="row">
+        @each(invoice in invoices)
+            <div class="col-md-4 mb-4 invoice-wrapper">
+                <a href="/view-invoice/{{invoice.id}}" class="w-100">
+                    <div class="card shadow-lg bg-dark text-white">
+                        <div class="card-body">
+                            <blockinvoice class="blockinvoice mb-0">
+                                <p>{{invoice.body}}</p>
+                                <footer class="blockinvoice-footer">
+                                    <cite title="Source Title"> {{invoice.username}}</cite>
+                                </footer>
+                            </blockinvoice>
+                            @if(auth.user.id == invoice.user_id)
+                              <div>
+                                <a  href="/edit-invoice/{{invoice.id}}" class="btn btn-primary">edit</a>
+                                <a href="/delete-invoice/{{invoice.id}}" class="btn btn-danger">delete</a>
+                              </div>
+                            @endif
+                        </div>
+                    </div>
+                </a> 
+            </div>  
+        @else 
+         <div class="col-md-12 empty-invoice text-center">
+                <p>No inspirational invoice has been created</p>
+         </div>
+        @endeach
+    </div>
+</div>
+@endsection
